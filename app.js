@@ -4,8 +4,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const width = 16
   const height = 16
   const squares = []
-  let spaceship = 0
   let gameInPlay = true
+  let spaceship = 249
+  let bullet = 0
+
+
+// ALIEN
 
   // 1. Create a grid
   for(let i = 0; i < width * width; i++) {
@@ -26,31 +30,59 @@ document.addEventListener('DOMContentLoaded', () => {
     squares[alienIndex].classList.add('alien')
   })
 
-  // // 4. create a forEach for the squares.
-  // function aliensInPlay(element, index) {
-  //   setInterval(() => {
-  //
-  //   })
-  // }
-
-
-  
-
   setInterval(() => {
     alienArray.forEach((alienIndex) => {
       squares[alienIndex].classList.remove('alien')
     })
-
+    // 5. get all aliens moving right - forEach (%)
     alienArray = alienArray.map((alienIndex) => alienIndex + 1)
 
     alienArray.forEach((alienIndex) => {
       squares[alienIndex].classList.add('alien')
     })
   }, 1000)
+
+// 6. get aliens moving down.
+
+// SPACESHIP
+
+  squares[spaceship].classList.add('spaceship')
+
+  function spaceshipInPlay() {
+    const spaceshipPos = squares.find(square =>
+      square.classList.contains('spaceship'))
+    spaceshipPos.classList.remove('spaceship')
+    squares[spaceship].classList.add('spaceship')
+
+  }
+
+  document.addEventListener('keydown', (e) => {
+    switch(e.keyCode) {
+      case 37:
+        // left
+        if(spaceship % width > 0) {
+          spaceship--
+          spaceshipInPlay()
+        }
+        break
+
+      case 39:
+        // right
+        if(spaceship % width < width - 1) {
+          spaceship++
+          spaceshipInPlay()
+        }
+        break
+    }
+  })
+
+//BULLETS
+
+  document.addEventListener('keydown', (e) => {
+    if (e.keyCode === 32) {
+      bullet.classList.add('') = squares[spaceship - width]
+    }
+  })
+
+
 })
-
-
-
-  // 5. get all aliens moving right - forEach (%)
-
-  // 6. get aliens moving down.

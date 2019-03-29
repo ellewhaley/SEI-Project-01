@@ -34,3 +34,7 @@ body {
 .spaceship {
   background-color: orange;
 }
+
+.class {
+  bullet: red;
+}
