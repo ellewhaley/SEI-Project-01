@@ -1,11 +1,21 @@
 * {
   box-sizing: border-box;
+  text-align: center;
 }
 
 body {
-  background: dodgerblue;
+  background-image: url('images/space.jpg');
   color: white;
   height: 600px;
+  margin: 0 auto;
+}
+
+main {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  margin: 0 auto;
+  justify-content: center;
 }
 
 .grid {
@@ -28,13 +38,19 @@ body {
 }
 
 .alien {
-  background-color: yellow;
+  background-image: url('images/alien.png');
+  background-position: center;
+  background-size: contain;
 }
 
 .spaceship {
-  background-color: orange;
+  background-image: url('images/spaceship.png');
+  background-position: center;
+  background-size: contain;
 }
 
-.class {
-  bullet: red;
+.bullet {
+  background-image: url('images/bullet.png');
+  background-position: center;
+  background-size: contain;
 }

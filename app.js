@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const squares = []
   let gameInPlay = true
   let spaceship = 249
-  let bullet = 0
+  let bulletIndex = 0
 
 
 // ALIEN
@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
     alienArray.forEach((alienIndex) => {
       squares[alienIndex].classList.add('alien')
     })
-  }, 1000)
+  }, 500)
 
 // 6. get aliens moving down.
 
@@ -79,10 +79,19 @@ document.addEventListener('DOMContentLoaded', () => {
 //BULLETS
 
   document.addEventListener('keydown', (e) => {
+    let bulletIndex = spaceship
     if (e.keyCode === 32) {
-      bullet.classList.add('') = squares[spaceship - width]
+
+      setInterval(() => {
+        if(bulletIndex - width >= 0) {
+          squares[bulletIndex].classList.remove('bullet')
+          bulletIndex -= width
+          squares[bulletIndex].classList.add('bullet')
+        } else {
+          squares[bulletIndex].classList.remove('bullet')
+        }
+      }, 200)
     }
   })
-
 
 })
