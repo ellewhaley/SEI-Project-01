@@ -54,3 +54,13 @@ main {
   background-position: center;
   background-size: contain;
 }
+
+.bomb {
+  background-image: url('images/bullet.png');
+  background-position: center;
+  background-size: contain;
+}
+
+.die {
+  background: black;
+}

@@ -6,8 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const squares = []
   let gameInPlay = true
   let spaceship = 249
-  let bulletIndex = 0
-
+  let alienMove = 0
 
 // ALIEN
 
@@ -30,16 +29,26 @@ document.addEventListener('DOMContentLoaded', () => {
     squares[alienIndex].classList.add('alien')
   })
 
-  setInterval(() => {
+  const alienMovement = [1, 1, 1, 1, width, -1, -1, -1, -1, width]
+  // set interval
+  const alienInterval = setInterval(() => {
+    // loop through
     alienArray.forEach((alienIndex) => {
       squares[alienIndex].classList.remove('alien')
     })
+
     // 5. get all aliens moving right - forEach (%)
-    alienArray = alienArray.map((alienIndex) => alienIndex + 1)
+    alienArray = alienArray.map((alienIndex) => alienIndex + alienMovement[alienMove])
 
     alienArray.forEach((alienIndex) => {
       squares[alienIndex].classList.add('alien')
     })
+
+    alienMove++
+
+    if (alienMove === alienMovement.length) alienMove = 0
+
+    if (alienArray.some(alienIndex => alienIndex >= 240)) clearInterval(alienInterval)
   }, 500)
 
 // 6. get aliens moving down.
@@ -53,7 +62,6 @@ document.addEventListener('DOMContentLoaded', () => {
       square.classList.contains('spaceship'))
     spaceshipPos.classList.remove('spaceship')
     squares[spaceship].classList.add('spaceship')
-
   }
 
   document.addEventListener('keydown', (e) => {
@@ -76,13 +84,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   })
 
-//BULLETS
+ // BULLETS
 
   document.addEventListener('keydown', (e) => {
     let bulletIndex = spaceship
     if (e.keyCode === 32) {
-
-      setInterval(() => {
+      const bulletInterval = setInterval(() => {
         if(bulletIndex - width >= 0) {
           squares[bulletIndex].classList.remove('bullet')
           bulletIndex -= width
@@ -90,8 +97,37 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
           squares[bulletIndex].classList.remove('bullet')
         }
+        if (squares[bulletIndex].classList.contains('alien')) {
+          clearInterval(bulletInterval)
+          squares[bulletIndex].classList.remove('bullet')
+          squares[bulletIndex].classList.remove('alien')
+          // clearInterval(alienInterval)
+        }
       }, 200)
     }
-  })
+  },)
+
+  // BOMBS
+
+  function bombDrop() {
+    setInterval(() => {
+      let randomAlien = alienArray[Math.floor(Math.random() * alienArray.length)]
+
+      setInterval(() => {
+        squares[randomAlien].classList.remove('bomb')
+        randomAlien += width
+        squares[randomAlien].classList.add('bomb')
+      }, 500)
+    }, 2000)
+  }
+
+  bombDrop()
+
+
+
+
+
+
+  //  Check for rocket/invader collisions.
 
 })
