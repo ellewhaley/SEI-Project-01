@@ -2,17 +2,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const grid = document.querySelector('.grid')
   const score = document.querySelector('.score')
-  const lives = document.querySelector('.lives')
-  const endScore = document.querySelector('.end-score')
-  const restart = document.querySelector('.restart')
-  const gameOver = document.querySelector('.game-over')
+  const health = document.querySelector('.health')
   const width = 16
   const squares = []
   let gameInPlay = true
   let spaceship = 249
   let alienMove = 0
   let scoreTotal = 0
-  let loseLife = 3
+  let loseLife = 5
   let alienArray = [
     0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
     16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,
@@ -52,9 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (alienMove === alienMovement.length) alienMove = 0
 
-    if (alienArray.some(alienIndex => alienIndex >= 240)) {
-      return endGame()
-    }
+    if (alienArray.some(alienIndex => alienIndex >= 240)) clearInterval(alienInterval)
   }, 500)
 
 
@@ -72,48 +67,52 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ************************** BOMB FUNCTION ***********************
 
-  function bombDrop() {
-    const randomAlienInterval = setInterval(() => {
-      let randomAlien = alienArray[Math.floor(Math.random() * alienArray.length)]
+  function randomAlien(){
+    console.log('random alien selected')
+    return alienArray[Math.floor(Math.random() * alienArray.length)]
+  }
 
+  function bombDrop(shooter, direction, className, speed) {
+    if (gameInPlay) {
       const bombInterval = setInterval(() => {
-        if (randomAlien + width <= 255) {
-          squares[randomAlien].classList.remove('bomb')
-          randomAlien += width
-          squares[randomAlien].classList.add('bomb')
-        } else {
-          squares[randomAlien].classList.remove('bomb')
-        }
-        if (squares[randomAlien].classList.contains('spaceship')) {
+        if (shooter + direction <= 255) {
+          squares[shooter].classList.remove(className)
+          shooter += direction
+          squares[shooter].classList.add(className)
+        } else squares[shooter].classList.remove(className)
+        if (squares[shooter].classList.contains('spaceship')) {
           loseLife--
-          if (loseLife === 0) {
-            clearInterval(randomAlienInterval)
-            clearInterval(bombInterval)
-            return endGame()
-          }
-          lives.innerText = loseLife
-          squares[randomAlien].classList.remove('bomb')
+          health.innerText = loseLife
+          squares[shooter].classList.remove(className)
           clearInterval(bombInterval)
-          squares[randomAlien].classList.add('spaceshipExp')
+          squares[shooter].classList.add('spaceshipExp')
           setTimeout(() => {
-            squares[randomAlien].classList.remove('spaceshipExp')
+            squares[shooter].classList.remove('spaceshipExp')
           }, 1000)
         }
-      }, 500)
-    }, 2000)
+      }, speed)
+    } else return
   }
+
+  setInterval(() => {
+    const alien = randomAlien()
+    bombDrop(alien, width, 'bomb', 200)
+  }, 2000)
 
   // ************************ END GAME FUNCTION ************************
 
-  function endGame() {
-    gameInPlay = false
-    grid.style.display = 'none'
-    clearInterval(alienInterval)
-    lives.innerText = 'You Dead!'
-    gameOver.innerText = 'Game Over!'
-    endScore.innerText = `You Scored: ${scoreTotal}`
-    restart.innerText = 'Play again?'
-  }
+  // function endGame() {
+  //   if (loseLife === 0) {
+  //     clearInterval(alienInterval)
+  //     clearInterval(randomAlienInterval)
+  //     clearInterval(bombInterval)
+  //      health.innerText = 'You Dead!'
+  //      let gameInPlay = false
+  //      alienArray.forEach(alienIndex => {
+  //      squares[alienIndex].classList.remove('alien')
+  //  })
+  //   }
+  // }
 
   // ******************** SPACESHIP EVENT LISTENER ********************
 
@@ -142,32 +141,37 @@ document.addEventListener('DOMContentLoaded', () => {
   // ******************** BULLETS EVENT LISTENER **********************
 
   document.addEventListener('keydown', (e) => {
-    let bulletIndex = spaceship
-    if (e.keyCode === 32) {
-      const bulletInterval = setInterval(() => {
-        if(bulletIndex - width >= 0) {
-          squares[bulletIndex].classList.remove('bullet')
-          bulletIndex -= width
-          squares[bulletIndex].classList.add('bullet')
-        } else {
-          squares[bulletIndex].classList.remove('bullet')
-        }
-        if (squares[bulletIndex].classList.contains('alien')) {
-          clearInterval(bulletInterval)
-          squares[bulletIndex].classList.remove('bullet')
-          scoreTotal++
-          score.innerText = scoreTotal
-          const alienPos = alienArray.indexOf(bulletIndex)
-          alienArray.splice(alienPos, 1)
-          squares[bulletIndex].classList.remove('alien')
-          squares[bulletIndex].classList.add('alienExp')
-          setTimeout(() => {
-            squares[bulletIndex].classList.remove('alienExp')
-          }, 500)
-        }
-      }, 200)
-    }
+    if (gameInPlay) {
+      let bulletIndex = spaceship
+      if (e.keyCode === 32) {
+        const bulletInterval = setInterval(() => {
+          if(bulletIndex - width >= 0) {
+            squares[bulletIndex].classList.remove('bullet')
+            bulletIndex -= width
+            squares[bulletIndex].classList.add('bullet')
+          } else {
+            squares[bulletIndex].classList.remove('bullet')
+          }
+          if (squares[bulletIndex].classList.contains('alien')) {
+            clearInterval(bulletInterval)
+            squares[bulletIndex].classList.remove('bullet')
+            scoreTotal++
+            score.innerText = scoreTotal
+
+            const alienPos = alienArray.indexOf(bulletIndex)
+            alienArray.splice(alienPos, 1)
+            squares[bulletIndex].classList.remove('alien')
+            squares[bulletIndex].classList.add('alienExp')
+            setTimeout(() => {
+              squares[bulletIndex].classList.remove('alienExp')
+            }, 500)
+          }
+        }, 200)
+      }
+    } else return
   })
 
   bombDrop()
+  endGame()
+
 })

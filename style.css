@@ -4,9 +4,11 @@
 }
 
 body {
-  background-image: url('images/space.jpg');
+  background-image: url('images/galaxy.jpg');
+  background-size: cover;
   color: white;
   height: 600px;
+  width: 800px
   margin: 0 auto;
 }
 
@@ -25,28 +27,32 @@ main {
   align-items: center;
   flex-wrap: wrap;
   margin: 0;
-  max-width: 600px;
-  max-height: 600px;
   flex-grow: 1;
+  background: transparent;
+}
+
+.style {
+  background: rgba(0,0,0,0.4);
+  width: 800px;
 }
 
 .grid div {
   flex-grow: 1;
   height: calc(100% / 16);
   width: calc(100% / 16);
-  border: 1px solid black;
 }
 
 .alien {
   background-image: url('images/alien.png');
   background-position: center;
   background-size: contain;
+  background-repeat: no-repeat;
 }
 
 .spaceship {
   background-image: url('images/spaceship.png');
   background-position: center;
-  background-size: contain;
+  background-size: cover;
 }
 
 .bullet {
@@ -56,11 +62,40 @@ main {
 }
 
 .bomb {
-  background-image: url('images/bullet.png');
+  background-image: url('images/alienbomb.png');
   background-position: center;
   background-size: contain;
 }
 
-.die {
-  background: black;
+.alienExp {
+  background-image: url('images/color_explosion.png');
+  background-position: center;
+  background-size: cover;
+}
+
+.spaceshipExp {
+  background-image: url('images/explosion.png');
+  background-position: center;
+  background-size: cover;
+}
+
+.start-again {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.game-over {
+  font-weight: 700px;
+  text-transform: uppercase;
+  color: red;
+  font-size: 30px;
+}
+
+.end-score, {
+
+}
+
+.restart {
+
 }
