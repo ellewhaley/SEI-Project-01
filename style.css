@@ -10,6 +10,7 @@ body {
   height: 600px;
   width: 800px
   margin: 0 auto;
+  font-family: 'Teko', sans-serif;
 }
 
 main {
@@ -18,6 +19,11 @@ main {
   display: flex;
   margin: 0 auto;
   justify-content: center;
+}
+
+h1 {
+  font-size: 100px;
+  text-transform: uppercase;
 }
 
 .grid {
@@ -98,4 +104,8 @@ main {
 
 .restart {
 
+}
+
+.hidden {
+  display: none!important;
 }

@@ -3,25 +3,35 @@
   <head>
     <meta charset="utf-8">
     <title></title>
+    <link href="https://fonts.googleapis.com/css?family=Teko" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script src="app.js" charset="utf-8"></script>
   </head>
   <body>
     <header>
-      <h1>Space Invaders</h1>
-      <h2>Score: <span class="score">0</span></h2>
-      <h2>Lives: <span class="lives">3</span></h2>
+      <div class="score-board hidden">
+        <h2>Score: <span class="score">0</span></h2>
+        <h2>Lives: <span class="lives">3</span></h2>
+      </div>
     </header>
     <main>
       <div class="style">
-      <div class="grid">
+        <div class="start-page">
+          <h1>Space Invaders</h1>
+          <div class="instructions">
+            <h2>How To Play</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+          </div>
+          <button id="start-button">Start Game</button>
+        </div>
+        <div class="grid hidden">
 
-      </div>
-      <div class="start-again">
-        <div class="game-over"></div>
-        <div class="end-score"></div>
-        <div class="restart"></div>
-      </div>
+        </div>
+        <div class="start-again">
+          <div class="game-over"></div>
+          <div class="end-score"></div>
+          <button id="restart" class="hidden"></button>
+        </div>
       </div>
     </main>
   </body>

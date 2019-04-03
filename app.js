@@ -1,43 +1,42 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+  // ************************* variables **************************
+
+  const startPage = document.querySelector('.start-page')
+  const startButton = document.getElementById('start-button')
   const grid = document.querySelector('.grid')
   const score = document.querySelector('.score')
-  const lives = document.querySelector('.lives')
+  const livesDiv = document.querySelector('.lives')
   const endScore = document.querySelector('.end-score')
-  const restart = document.querySelector('.restart')
+  const startAgain = document.querySelector('.start-again')
+  const restartButton = document.getElementById('restart')
   const gameOver = document.querySelector('.game-over')
+  const scoreBoard = document.querySelector('.score-board')
   const width = 16
   const squares = []
-  let gameInPlay = true
-  let spaceship = 249
-  let alienMove = 0
-  let scoreTotal = 0
-  let loseLife = 3
-  let alienArray = [
+  const alienMovement = [1, 1, 1, 1, width, -1, -1, -1, -1, width] // right x4 down left x4 down (repeat)
+  const alienInterval = setInterval(moveAliens, 500) // let alienInterval
+  const alienStart = [
     0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
     16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,
     32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43
   ]
-
-  // **************************** GRID *****************************
-
-  for(let i = 0; i < width * width; i++) {
-    const square = document.createElement('div')
-    squares.push(square)
-    grid.appendChild(square)
-  }
+  let alienArray = alienStart
+  let spaceship = 249
+  let alienMove = 0
+  let scoreTotal = 0
+  let lives = 3
 
   // *************************** ALIENS ****************************
 
-  // Add .alien class to all the elements in the array.
-  alienArray.forEach(alienIndex => {
-    squares[alienIndex].classList.add('alien')
-  })
-
-  // Aliens move right x4 down x1 left x4 down x1 (repeat)
-  const alienMovement = [1, 1, 1, 1, width, -1, -1, -1, -1, width]
-  const alienInterval = setInterval(() => { // set interval
-
+  // Add alien class
+  function createAliens() {
+    alienArray.forEach(alienIndex => {
+      squares[alienIndex].classList.add('alien')
+    })
+  }
+  // move aliens
+  function moveAliens() { // set interval
     alienArray.forEach((alienIndex) => { // loop through
       squares[alienIndex].classList.remove('alien')
     })
@@ -49,99 +48,62 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
     alienMove++
-
     if (alienMove === alienMovement.length) alienMove = 0
-
     if (alienArray.some(alienIndex => alienIndex >= 240)) {
       return endGame()
     }
-  }, 500)
+  }
+  // remove alien class
+  function clearAliens() {
+    alienArray.forEach(alienIndex => {
+      squares[alienIndex].classList.remove('alien')
+    })
+  }
 
+  // **************************** GRID *****************************
 
-  // ********************** SPACESHIP FUNCTION **********************
+  for(let i = 0; i < width * width; i++) {
+    const square = document.createElement('div')
+    squares.push(square)
+    grid.appendChild(square)
+  }
 
-  squares[spaceship].classList.add('spaceship')
+  // ************************** SPACESHIP **************************
 
-  function spaceshipInPlay() {
-    const spaceshipPos = squares.find(square =>
-      square.classList.contains('spaceship'))
-    spaceshipPos.classList.remove('spaceship')
+  function createSpaceship() {
     squares[spaceship].classList.add('spaceship')
-
   }
 
-  // ************************** BOMB FUNCTION ***********************
+  function moveSpaceship(direction) {
+    squares[spaceship].classList.remove('spaceship')
+    spaceship += direction
+    squares[spaceship].classList.add('spaceship')
+  }
 
-  function bombDrop() {
-    const randomAlienInterval = setInterval(() => {
-      let randomAlien = alienArray[Math.floor(Math.random() * alienArray.length)]
+  // ************************** SPACESHIP **************************
 
-      const bombInterval = setInterval(() => {
-        if (randomAlien + width <= 255) {
-          squares[randomAlien].classList.remove('bomb')
-          randomAlien += width
-          squares[randomAlien].classList.add('bomb')
-        } else {
-          squares[randomAlien].classList.remove('bomb')
+  function handleSpaceshipMove(e) {
+    switch(e.keyCode) {
+      case 37:
+        // left
+        if(spaceship % width > 0) {
+          moveSpaceship(-1)
         }
-        if (squares[randomAlien].classList.contains('spaceship')) {
-          loseLife--
-          if (loseLife === 0) {
-            clearInterval(randomAlienInterval)
-            clearInterval(bombInterval)
-            return endGame()
-          }
-          lives.innerText = loseLife
-          squares[randomAlien].classList.remove('bomb')
-          clearInterval(bombInterval)
-          squares[randomAlien].classList.add('spaceshipExp')
-          setTimeout(() => {
-            squares[randomAlien].classList.remove('spaceshipExp')
-          }, 1000)
+        break
+
+      case 39:
+        // right
+        if(spaceship % width < width - 1) {
+          moveSpaceship(+1)
         }
-      }, 500)
-    }, 2000)
+        break
+    }
   }
 
-  // ************************ END GAME FUNCTION ************************
+  // *************************** BULLETS **************************
 
-  function endGame() {
-    gameInPlay = false
-    grid.style.display = 'none'
-    clearInterval(alienInterval)
-    lives.innerText = 'You Dead!'
-    gameOver.innerText = 'Game Over!'
-    endScore.innerText = `You Scored: ${scoreTotal}`
-    restart.innerText = 'Play again?'
-  }
-
-  // ******************** SPACESHIP EVENT LISTENER ********************
-
-  document.addEventListener('keydown', (e) => {
-    if (gameInPlay) {
-      switch(e.keyCode) {
-        case 37:
-          // left
-          if(spaceship % width > 0) {
-            spaceship--
-            spaceshipInPlay()
-          }
-          break
-
-        case 39:
-          // right
-          if(spaceship % width < width - 1) {
-            spaceship++
-            spaceshipInPlay()
-          }
-          break
-      }
-    } else return
-  })
-
-  // ******************** BULLETS EVENT LISTENER **********************
-
-  document.addEventListener('keydown', (e) => {
+  function handleShootBullet(e) {
+    console.log('shooty mcshoot')
     let bulletIndex = spaceship
     if (e.keyCode === 32) {
       const bulletInterval = setInterval(() => {
@@ -167,7 +129,104 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }, 200)
     }
-  })
+  }
 
-  bombDrop()
+  // **************************** BOMB ***************************
+
+  function BombAllocation() {
+    setInterval(() => {
+      let randomAlien = alienArray[Math.floor(Math.random() * alienArray.length)]
+
+      const bombInterval = setInterval(() => {
+        if (randomAlien + width <= 255) {
+          squares[randomAlien].classList.remove('bomb')
+          randomAlien += width
+          squares[randomAlien].classList.add('bomb')
+        } else {
+          squares[randomAlien].classList.remove('bomb')
+        }
+        if (squares[randomAlien].classList.contains('spaceship')) {
+          squares[randomAlien].classList.remove('bomb')
+          clearInterval(bombInterval)
+          spaceshipExplosion()
+          loseLife()
+          if (lives === 0) {
+            clearInterval(alienInterval)
+            clearInterval(bombInterval)
+            return endGame()
+          }
+        }
+      }, 500)
+    }, 2000)
+  }
+
+  // ********************* SPACESHIP EXPLOSION *********************
+
+  function spaceshipExplosion() {
+    squares[spaceship].classList.add('spaceshipExp')
+    setTimeout(() => {
+      squares[spaceship].classList.remove('spaceshipExp')
+    }, 1000)
+  }
+
+  // ********************** LIFE **********************
+
+  function loseLife() {
+    lives--
+    livesDiv.innerText = lives
+  }
+
+  // ************************ START GAME ***********************
+
+  function startGame() {
+    // scoreTotal = 0 // re-set the score
+    // clearAliens()// clear all alien classes
+    // alienArray = alienStart // re-set the alien array
+    createAliens() // apply alien classes
+    moveAliens() // start the movement
+    BombAllocation() // start the bombs dropping
+    createSpaceship() // create spaceship
+    startPage.classList.add('hidden') // hide start screen
+    scoreBoard.classList.remove('hidden')
+    grid.classList.remove('hidden')
+  }
+
+  // ************************ END GAME ************************
+
+  function endGame() {
+    grid.style.display = 'none'
+    clearInterval(alienInterval)
+    livesDiv.innerText = 'You Dead!'
+    gameOver.innerText = 'Game Over!'
+    endScore.innerText = `You Scored: ${scoreTotal}`
+    restartButton.classList.remove('hidden')
+    restartButton.innerText = 'Play again?'
+    scoreBoard.classList.add('hidden')
+  }
+
+  // ********************* RESTART *****************************
+
+  function restart(){
+    scoreBoard.classList.remove('hidden')
+    scoreTotal = 0 // re-set the score
+    score.innerText = scoreTotal
+    lives = 3 // re-set lives
+    livesDiv.innerText = lives
+    clearAliens()// clear all alien classes
+    createAliens() // apply alien classes
+    moveAliens() // start the movement
+    BombAllocation() // start the bombs dropping
+    createSpaceship() // create spaceship
+    startAgain.classList.add('hidden') // hide end screen
+    scoreBoard.classList.remove('hidden')
+    grid.classList.remove('hidden')
+  }
+
+  // ********************* Event Listeners *********************
+
+  document.addEventListener('keydown', handleSpaceshipMove)
+  document.addEventListener('keydown', handleShootBullet)
+
+  startButton.addEventListener('click', startGame)
+  restartButton.addEventListener('click', restart)
 })
