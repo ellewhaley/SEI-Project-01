@@ -86,6 +86,7 @@ h1 {
 }
 
 .start-again {
+  font-size: 40px;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -96,6 +97,10 @@ h1 {
   text-transform: uppercase;
   color: red;
   font-size: 30px;
+}
+
+.win-or-lose {
+
 }
 
 .end-score, {
