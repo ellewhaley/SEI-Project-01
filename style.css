@@ -55,9 +55,14 @@ h1 {
   text-shadow: 2px 2px black;
 }
 
+.list {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
 p {
   font-size: 23px;
   color: grey;
+  font-shadow: 3px 3px black;
 }
 
 .score-board {
@@ -162,16 +167,22 @@ button {
   color: #ffea05;
   font-weight: 500;
   font-size: 16px;
+  text-transform: uppercase;
   background-color: transparent;
   border-radius: 5px;
+  border: none;
   margin-top: 30px;
   padding: 5px 10px;
   cursor: pointer;
 }
 
 button:hover {
-  text-transform: uppercase;
+  text-decoration: underline;
   font-weight: 600;
+}
+
+button:focus {
+  outline: 0;
 }
 
 .hidden {

@@ -175,6 +175,8 @@ document.addEventListener('DOMContentLoaded', () => {
             squares[bulletIndex].classList.remove('alienExp')
           }, 500)
           if (alienArray.length === 0) {
+            // secondAliens()
+            clearIntervals()
             wonGame()
             victoryAudio.play()
           }
@@ -183,6 +185,22 @@ document.addEventListener('DOMContentLoaded', () => {
       }, 200)
     }
   }
+
+  // function secondAliens() {
+  //   for(let i = 0; i < 3; i++) {
+  //     squares.forEach(square => {
+  //       square.classList.remove('alien', 'alienExp', 'spaceshipExp', 'bullet', 'bomb')
+  //     })
+  //     clearIntervals()
+  //     alienArray = alienStart.slice()
+  //     alienMove = 0
+  //     createAliens()
+  //     bombSelectionInterval = setInterval(BombAllocation, 400)
+  //     alienInterval = setInterval(moveAliens, 200)
+  //     moveAliens()
+  //     BombAllocation()
+  //   } return
+  // }
 
   // **************************** BOMB ***************************
 
@@ -252,7 +270,7 @@ document.addEventListener('DOMContentLoaded', () => {
     gameTimer()
     livesDiv.innerText = lives
     createAliens()
-    bombSelectionInterval = setInterval(BombAllocation, 500)
+    bombSelectionInterval = setInterval(BombAllocation, 600)
     alienInterval = setInterval(moveAliens, 300)
     moveAliens()
     BombAllocation()
