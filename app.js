@@ -44,9 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // ***************************** COUNTDOWN ***************************
 
   function startTimer() {
-    const beep = setInterval(() => {
-      startCountdown.play()
-    }, 100)
+    startCountdown.play()
     countdownDiv.classList.remove('hidden')
     startPage.classList.add('hidden')
     startAgain.classList.add('hidden')
@@ -57,9 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
       timeLeft--
       countdownDiv.innerText = timeLeft
       if(timeLeft <=0) {
-        startCountdown.play()
         clearInterval(countdown)
-        clearInterval(beep)
         startGame()
       }
     }, 1000)
@@ -237,8 +233,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // ************************ START GAME ***********************
 
   function startGame() {
+    go.play()
     setTimeout(() => {
-      go.play()
     }, 500)
     countdownDiv.classList.add('hidden')
     clearIntervals()
