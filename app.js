@@ -173,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
         squares[randomAlien].classList.add('spaceshipExp')
         setTimeout(() => {
           squares[randomAlien].classList.remove('spaceshipExp')
-        }, 1000)
+        }, 500)
         loseLife()
         if (lives === 0) {
           clearInterval(alienInterval)
@@ -181,7 +181,7 @@ document.addEventListener('DOMContentLoaded', () => {
           return lostGame()
         }
       }
-    }, 500)
+    }, 100)
   }
 
   // ********************** LIFE **********************
@@ -209,8 +209,8 @@ document.addEventListener('DOMContentLoaded', () => {
     lives = 3
     livesDiv.innerText = lives
     createAliens()
-    bombSelectionInterval = setInterval(BombAllocation, 2000)
-    alienInterval = setInterval(moveAliens, 500)
+    bombSelectionInterval = setInterval(BombAllocation, 500)
+    alienInterval = setInterval(moveAliens, 300)
     moveAliens()
     BombAllocation()
     createSpaceship()
