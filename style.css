@@ -4,13 +4,26 @@
 }
 
 body {
-  background-image: url('images/galaxy.jpg');
-  background-size: cover;
-  color: white;
+  background-color: black;
+  color: #ffea05;
   height: 800px;
   width: 800px
   margin: 0 auto;
   font-family: 'Teko', sans-serif;
+}
+
+body:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('images/galaxy.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  opacity: 0.3;
+  z-index: -1;
 }
 
 header {
@@ -29,6 +42,7 @@ main {
 h1 {
   font-size: 100px;
   text-transform: uppercase;
+  color: #ffea05;
 }
 
 .score-board {
@@ -36,6 +50,7 @@ h1 {
   height: 100%;
   margin-left: -90px;
   margin-top: -40px;
+  color: #ffea05;
 }
 
 .left-side {
@@ -54,7 +69,6 @@ h1 {
 }
 
 .style {
-  background: rgba(0,0,0,0.4);
   width: 800px;
 }
 
@@ -113,8 +127,9 @@ h1 {
 .game-over {
   font-weight: 700px;
   text-transform: uppercase;
-  color: red;
-  font-size: 30px;
+  font-weight: bold;
+  color: #c90802;
+  font-size: 80px;
 }
 
 .countdown {
@@ -125,16 +140,21 @@ h1 {
   justify-content: center;
 }
 
-.win-or-lose {
-
+button {
+  color: black;
+  font-weight: 500;
+  font-size: 16px;
+  background-color: #ffea05;
+  border: 1px solid black;
+  border-radius: 5px;
+  margin-top: 30px;
+  padding: 5px 10px;
+  cursor: pointer;
 }
 
-.end-score, {
-
-}
-
-.restart {
-
+button:hover {
+  font-weight: 800;
+  border: 3px solid black;
 }
 
 .hidden {

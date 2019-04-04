@@ -180,6 +180,10 @@ document.addEventListener('DOMContentLoaded', () => {
       // if (randomAlien + width <= 255) {
       squares[randomAlien].classList.remove('bomb')
       randomAlien += width
+      if(!squares[randomAlien]) {
+        clearInterval(bombInterval)
+        return false
+      }
       squares[randomAlien].classList.add('bomb')
       // } else {
       //   squares[randomAlien].classList.remove('bomb')
