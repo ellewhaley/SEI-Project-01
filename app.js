@@ -4,6 +4,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const startPage = document.querySelector('.start-page')
   const startButton = document.getElementById('start-button')
+  const startAgain = document.querySelector('.start-again')
+  const countdownDiv = document.querySelector('.countdown')
   const grid = document.querySelector('.grid')
   const score = document.querySelector('.score')
   const livesDiv = document.querySelector('.lives')
@@ -28,6 +30,25 @@ document.addEventListener('DOMContentLoaded', () => {
   let scoreTotal = 0
   let lives = 3
   let gameInPlay = false
+  let timeLeft
+
+  // ***************************** COUNTDOWN ***************************
+  function startTimer() {
+    countdownDiv.classList.remove('hidden')
+    startPage.classList.add('hidden')
+    startAgain.classList.add('hidden')
+    countdownDiv.classList.remove('hidden')
+    timeLeft = 3
+    countdownDiv.innerText = timeLeft
+    const countdown  = setInterval(() => {
+      timeLeft--
+      countdownDiv.innerText = timeLeft
+      if(timeLeft <=0) {
+        clearInterval(countdown)
+        startGame()
+      }
+    }, 1000)
+  }
 
   // *************************** ALIENS ****************************
 
@@ -173,6 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // ************************ START GAME ***********************
 
   function startGame() {
+    countdownDiv.classList.add('hidden')
     clearIntervals()
     gameInPlay = true
     squares.forEach(square => {
@@ -192,7 +214,6 @@ document.addEventListener('DOMContentLoaded', () => {
     moveAliens()
     BombAllocation()
     createSpaceship()
-    startPage.classList.add('hidden')
     scoreBoard.classList.remove('hidden')
     grid.classList.remove('hidden')
   }
@@ -210,6 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
     scoreBoard.classList.add('hidden')
     gameOver.innerText = 'Game Over!'
     endScore.innerText = `You Scored: ${scoreTotal}`
+    startAgain.classList.remove('hidden')
     restartButton.classList.remove('hidden')
     restartButton.innerText = 'Play again?'
   }
@@ -229,6 +251,6 @@ document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('keydown', handleSpaceshipMove)
   document.addEventListener('keydown', handleShootBullet)
 
-  startButton.addEventListener('click', startGame)
-  restartButton.addEventListener('click', startGame)
+  startButton.addEventListener('click', startTimer)
+  restartButton.addEventListener('click', startTimer)
 })
