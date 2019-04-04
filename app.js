@@ -15,6 +15,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const gameOver = document.querySelector('.game-over')
   const scoreBoard = document.querySelector('.score-board')
   const winOrLose = document.querySelector('.win-or-lose')
+  const startCountdown = document.getElementById('start-countdown')
+  const go = document.getElementById('go')
+  const alienAudio = document.getElementById('alien-dying')
+  const explosionAudio = document.getElementById('explosion')
+  const lazerAudio = document.getElementById('lazer')
+  const endAudio = document.getElementById('game-over')
+  const victoryAudio = document.getElementById('winner')
   const width = 16
   const squares = []
   const alienMovement = [1, 1, 1, 1, width, -1, -1, -1, -1, width] // right x4 down left x4 down (repeat)
@@ -37,6 +44,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // ***************************** COUNTDOWN ***************************
 
   function startTimer() {
+    const beep = setInterval(() => {
+      startCountdown.play()
+    }, 100)
     countdownDiv.classList.remove('hidden')
     startPage.classList.add('hidden')
     startAgain.classList.add('hidden')
@@ -47,7 +57,9 @@ document.addEventListener('DOMContentLoaded', () => {
       timeLeft--
       countdownDiv.innerText = timeLeft
       if(timeLeft <=0) {
+        startCountdown.play()
         clearInterval(countdown)
+        clearInterval(beep)
         startGame()
       }
     }, 1000)
@@ -90,7 +102,10 @@ document.addEventListener('DOMContentLoaded', () => {
     alienMove++
     if (alienMove === alienMovement.length) alienMove = 0
     if (alienArray.some(alienIndex => alienIndex >= 240)) {
-      return lostGame()
+      setTimeout(() => {
+        endAudio.play()
+        return lostGame()
+      }, 1500)
     }
   }
 
@@ -140,6 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('shooty mcshoot')
     let bulletIndex = spaceship
     if (e.keyCode === 32) {
+      lazerAudio.play()
       e.preventDefault()
       const bulletInterval = setInterval(() => {
         if(bulletIndex - width >= 0) {
@@ -158,11 +174,13 @@ document.addEventListener('DOMContentLoaded', () => {
           alienArray.splice(alienPos, 1)
           squares[bulletIndex].classList.remove('alien')
           squares[bulletIndex].classList.add('alienExp')
+          alienAudio.play()
           setTimeout(() => {
             squares[bulletIndex].classList.remove('alienExp')
           }, 500)
           if (alienArray.length === 0) {
             wonGame()
+            victoryAudio.play()
           }
         }
         if(!gameInPlay) clearInterval(bulletInterval)
@@ -192,6 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
         squares[randomAlien].classList.remove('bomb')
         clearInterval(bombInterval)
         squares[randomAlien].classList.add('spaceshipExp')
+        explosionAudio.play()
         setTimeout(() => {
           squares[randomAlien].classList.remove('spaceshipExp')
         }, 500)
@@ -199,7 +218,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (lives === 0) {
           clearInterval(alienInterval)
           clearInterval(bombInterval)
-          return lostGame()
+          setTimeout(() => {
+            endAudio.play()
+            return lostGame()
+          }, 1000)
         }
       }
     }, 100)
@@ -215,6 +237,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // ************************ START GAME ***********************
 
   function startGame() {
+    setTimeout(() => {
+      go.play()
+    }, 500)
     countdownDiv.classList.add('hidden')
     clearIntervals()
     gameInPlay = true
