@@ -13,6 +13,11 @@ body {
   font-family: 'Teko', sans-serif;
 }
 
+header {
+  height: 100px;
+  display: flex;
+}
+
 main {
   height: 600px;
   width: 100%;
@@ -24,6 +29,17 @@ main {
 h1 {
   font-size: 100px;
   text-transform: uppercase;
+}
+
+.score-board {
+  font-size: 30px;
+  height: 100%;
+  margin-left: -90px;
+  margin-top: -40px;
+}
+
+.left-side {
+  height: calc(100% / 3);
 }
 
 .grid {

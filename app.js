@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const grid = document.querySelector('.grid')
   const score = document.querySelector('.score')
   const livesDiv = document.querySelector('.lives')
+  const timeDiv = document.querySelector('.player-time')
   const endScore = document.querySelector('.end-score')
   const restartButton = document.getElementById('restart')
   const gameOver = document.querySelector('.game-over')
@@ -31,8 +32,10 @@ document.addEventListener('DOMContentLoaded', () => {
   let lives = 3
   let gameInPlay = false
   let timeLeft
+  let playerTime
 
   // ***************************** COUNTDOWN ***************************
+
   function startTimer() {
     countdownDiv.classList.remove('hidden')
     startPage.classList.add('hidden')
@@ -46,6 +49,20 @@ document.addEventListener('DOMContentLoaded', () => {
       if(timeLeft <=0) {
         clearInterval(countdown)
         startGame()
+      }
+    }, 1000)
+  }
+
+  // ***************************** TIMER ****************************
+
+  function gameTimer() {
+    playerTime = 0
+    timeDiv.innerText = playerTime
+    const timeInterval  = setInterval(() => {
+      playerTime++
+      timeDiv.innerText = playerTime
+      if (gameInPlay === false) {
+        clearInterval(timeInterval)
       }
     }, 1000)
   }
@@ -207,6 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
     scoreTotal = 0
     score.innerText = scoreTotal
     lives = 3
+    gameTimer()
     livesDiv.innerText = lives
     createAliens()
     bombSelectionInterval = setInterval(BombAllocation, 500)
