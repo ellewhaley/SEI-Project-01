@@ -18,7 +18,7 @@
 
 ## My Game - Space Invaders
 
-link to hosted version ----> 
+link to hosted version ----> https://ellewhaley.github.io/project-01/
 
 ### Game Overview
 
